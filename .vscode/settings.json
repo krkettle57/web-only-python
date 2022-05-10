@@ -1,0 +1,31 @@
+
+{
+  "[python]": {
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": true
+    }
+  },
+  "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+  "python.linting.enabled": true,
+  "python.linting.pylintEnabled": false,
+  "python.linting.flake8Enabled": true,
+  "python.linting.flake8Args": [
+    "--max-line-length=120",
+    "--ignore=E203,W503,W504",
+  ],
+  "python.linting.mypyEnabled": true,
+  "python.linting.mypyArgs": [
+    "--disallow-untyped-defs",
+    "--ignore-missing-imports",
+  ],
+  "python.linting.ignorePatterns": [
+    "tests/**/*.py"
+  ],
+  "python.linting.lintOnSave": true,
+  "python.formatting.provider": "black",
+  "python.formatting.blackArgs": [
+    "--line-length=120",
+  ],
+  "autoDocstring.docstringFormat": "numpy"
+}
