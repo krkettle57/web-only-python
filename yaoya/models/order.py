@@ -23,11 +23,13 @@ class Order:
     details: list[OrderDetail] = field(default_factory=list)
 
     def add_detail(self, item_id: str, unit_price: int, quantity: int) -> None:
+        subtotal_price = unit_price * quantity
         order_detail = OrderDetail(
             order_no=len(self.details) + 1,
             item_id=item_id,
             unit_price=unit_price,
             quantity=quantity,
-            subtotal_price=unit_price * quantity,
+            subtotal_price=subtotal_price,
         )
+        self.total_price += subtotal_price
         self.details.append(order_detail)
