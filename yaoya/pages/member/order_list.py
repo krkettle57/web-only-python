@@ -2,6 +2,7 @@ import streamlit as st
 from yaoya.const import PageId
 from yaoya.models.order import Order
 from yaoya.pages.member.base import MemberPage
+from yaoya.services.base import NotFoundError
 
 
 class OrderListPage(MemberPage):
@@ -22,7 +23,14 @@ class OrderListPage(MemberPage):
         for col, field_name in zip(columns, headers):
             col.write(field_name)
 
-        for index, order in enumerate(order_api_client.get_by_user_id(user.user_id)):
+        # 注文一覧を取得
+        try:
+            orders = order_api_client.get_by_user_id(user.user_id)
+        except NotFoundError:
+            st.warning("注文履歴はありません。")
+            return
+
+        for index, order in enumerate(orders):
             (
                 col_no,
                 col_id,
