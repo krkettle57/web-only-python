@@ -4,7 +4,6 @@ from typing import Optional, Protocol
 from mimesis import Field, Schema
 from mimesis.locales import Locale
 from yaoya.models.item import Item
-from yaoya.services.base import NotFoundError
 
 
 class IItemAPIClientService(Protocol):
@@ -12,15 +11,6 @@ class IItemAPIClientService(Protocol):
         pass
 
     def get_by_id(self, item_id: str) -> Item:
-        pass
-
-    def add_item(self, item: Item) -> None:
-        pass
-
-    def update_item(self, item_id: str, item: Item) -> None:
-        pass
-
-    def delete_item(self, item_id: str) -> None:
         pass
 
 
@@ -57,22 +47,3 @@ class MockItemAPIClientService(IItemAPIClientService):
             limit_ = limit
 
         return self.items[offset_ : offset_ + limit_]
-
-    def get_by_id(self, item_id: str) -> Item:
-        for item in self.items:
-            if item.item_id == item_id:
-                return item
-
-        raise NotFoundError(item_id)
-
-    def add_item(self, item: Item) -> None:
-        self.items.append(item)
-
-    def update_item(self, item_id: str, item: Item) -> None:
-        self.delete_item(item_id)
-        self.add_item(item)
-
-    def delete_item(self, item_id: str) -> None:
-        for idx, item in enumerate(self.items):
-            if item.item_id == item_id:
-                self.items.pop(idx)

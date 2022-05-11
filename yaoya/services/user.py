@@ -17,9 +17,6 @@ class MockUserAPIClientService(IUserAPIClientService):
                 user_id="member", name="会員", birthday=date(2000, 1, 1), email="guest@example.com", role=UserRole.MEMBER
             ),
             User(
-                user_id="owner", name="オーナー", birthday=date(2000, 1, 1), email="owner@example.com", role=UserRole.OWNER
-            ),
-            User(
                 user_id="admin", name="管理者", birthday=date(2000, 1, 1), email="admin@example.com", role=UserRole.ADMIN
             ),
         ]

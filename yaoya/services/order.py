@@ -11,9 +11,6 @@ class IOrderAPIClientService(Protocol):
     def get_by_user_id(self, user_id: str) -> list[Order]:
         pass
 
-    def get_by_id(self, order_id: str) -> Order:
-        pass
-
     def insert(self, order: Order) -> None:
         pass
 
@@ -31,13 +28,6 @@ class MockOrderAPIClientService(IOrderAPIClientService):
             raise NotFoundError(user_id)
 
         return orders
-
-    def get_by_id(self, order_id: str) -> Order:
-        for order in self.orders:
-            if order.order_id == order_id:
-                return order
-
-        raise NotFoundError(order_id)
 
     def insert(self, order: Order) -> None:
         self.orders.append(order)

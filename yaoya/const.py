@@ -25,4 +25,3 @@ class PageId(Enum):
 class UserRole(Enum):
     ADMIN = auto()
     MEMBER = auto()
-    OWNER = auto()
