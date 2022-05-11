@@ -1,8 +1,7 @@
 from dataclasses import dataclass
 from datetime import date
-from typing import Literal
 
-UserRole = Literal["admin", "member", "owner"]
+from yaoya.services.const import UserRole
 
 
 @dataclass
