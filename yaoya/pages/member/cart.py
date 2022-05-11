@@ -39,6 +39,9 @@ class CartPage(MemberPage):
             price_col.write(cart_item.item.price)
             q_col.write(cart_item.quantity)
 
+        # 合計金額表示
+        st.text(f"合計金額: {cart.total_price}")
+
         st.button("注文", on_click=self.order_commit, args=(cart, cart_api_client))
 
     def order_commit(self, cart: Cart, cart_api_client: ICartAPIClientService) -> None:

@@ -12,3 +12,4 @@ class CartItem(NamedTuple):
 class Cart(NamedTuple):
     user_id: str
     cart_items: list[CartItem]
+    total_price: int
