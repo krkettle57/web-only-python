@@ -1,11 +1,10 @@
-from dataclasses import dataclass
 from datetime import date
+from typing import NamedTuple
 
 from yaoya.const import UserRole
 
 
-@dataclass
-class User:
+class User(NamedTuple):
     user_id: str
     name: str
     birthday: date

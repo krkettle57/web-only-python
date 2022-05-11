@@ -1,8 +1,12 @@
+from datetime import datetime, timedelta, timezone
 from typing import Protocol
+from uuid import uuid4
 
 from yaoya.models.cart import Cart
 from yaoya.models.order import Order, OrderDetail
 from yaoya.services.base import NotFoundError
+
+JST = timezone(timedelta(hours=+9), "JST")
 
 
 class IOrderAPIClientService(Protocol):
@@ -44,5 +48,11 @@ class MockOrderAPIClientService(IOrderAPIClientService):
             )
             order_details.append(order_detail)
             total_price += subtotal_price
-        order = Order(user_id=cart.user_id, total_price=total_price, details=order_details)
+        order = Order(
+            order_id=str(uuid4()),
+            user_id=cart.user_id,
+            total_price=total_price,
+            ordered_at=datetime.now(JST),
+            details=order_details,
+        )
         self.orders.append(order)

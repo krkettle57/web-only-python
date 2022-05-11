@@ -11,6 +11,11 @@ class CartPage(MemberPage):
 
         user = self.ssm.get_user()
         cart_api_client = self.ssm.get_cart_api_client()
+        cart = cart_api_client.get_by_user_id(user.user_id)
+
+        if len(cart.cart_items) == 0:
+            st.warning("カートに入っている商品はありません。")
+            return
 
         # タイトル表示
         st.title(self.title)
@@ -22,7 +27,6 @@ class CartPage(MemberPage):
         for col, field_name in zip(columns, headers):
             col.write(field_name)
 
-        cart = cart_api_client.get_by_user_id(user.user_id)
         for cart_item in cart.cart_items:
             (
                 no_col,
@@ -35,7 +39,7 @@ class CartPage(MemberPage):
             price_col.write(cart_item.item.price)
             q_col.write(cart_item.quantity)
 
-        st.button("注文", on_click=self.order_commit, args=(cart, cart_api_client), disabled=len(cart.cart_items) == 0)
+        st.button("注文", on_click=self.order_commit, args=(cart, cart_api_client))
 
     def order_commit(self, cart: Cart, cart_api_client: ICartAPIClientService) -> None:
         order_api_client = self.ssm.get_order_api_client()

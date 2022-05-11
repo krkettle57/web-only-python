@@ -1,16 +1,14 @@
-from dataclasses import dataclass, field
+from typing import NamedTuple
 
 from yaoya.models.item import Item
 
 
-@dataclass
-class CartItem:
+class CartItem(NamedTuple):
     item_no: int
     item: Item
     quantity: int
 
 
-@dataclass
-class Cart:
+class Cart(NamedTuple):
     user_id: str
-    cart_items: list[CartItem] = field(default_factory=list)
+    cart_items: list[CartItem]

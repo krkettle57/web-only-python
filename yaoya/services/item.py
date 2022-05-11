@@ -10,9 +10,6 @@ class IItemAPIClientService(Protocol):
     def get_all(self, offset: Optional[int] = None, limit: Optional[int] = None) -> list[Item]:
         pass
 
-    def get_by_id(self, item_id: str) -> Item:
-        pass
-
 
 class MockItemAPIClientService(IItemAPIClientService):
     def __init__(self, n: int = 10) -> None:
