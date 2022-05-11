@@ -1,7 +1,7 @@
 import streamlit as st
 from yaoya.models.cart import Cart
-from yaoya.models.order import Order
 from yaoya.pages.member.base import MemberPage
+from yaoya.services.cart import ICartAPIClientService
 
 
 class CartPage(MemberPage):
@@ -35,17 +35,10 @@ class CartPage(MemberPage):
             price_col.write(cart_item.item.price)
             q_col.write(cart_item.quantity)
 
-        st.button("注文", on_click=self.order_commit, disabled=len(cart.cart_items) == 0)
+        st.button("注文", on_click=self.order_commit, args=(cart, cart_api_client), disabled=len(cart.cart_items) == 0)
 
-    def order_commit(self) -> None:
+    def order_commit(self, cart: Cart, cart_api_client: ICartAPIClientService) -> None:
         order_api_client = self.ssm.get_order_api_client()
-        # TODO: Order修正
-        # order = Order(user_id=cart.user_id)
-        # for cart_item in cart.cart_items:
-        #     order.add_detail(
-        #         item=cart_item.item,
-        #         quantity=cart_item.quantity,
-        #     )
-        # order_api_client.insert(order)
-        # cart.clear()
-        # st.sidebar.success("注文が完了しました")
+        order_api_client.order_commit(cart)
+        cart_api_client.clear_cart(cart.user_id)
+        st.sidebar.success("注文が完了しました")
