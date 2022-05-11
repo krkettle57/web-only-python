@@ -8,6 +8,9 @@ class IOrderAPIClientService(Protocol):
     def get_all(self) -> List[Order]:
         pass
 
+    def get_by_user_id(self, user_id: str) -> List[Order]:
+        pass
+
     def get_by_id(self, order_id: str) -> Order:
         pass
 
@@ -21,6 +24,13 @@ class MockOrderAPIClientService(IOrderAPIClientService):
 
     def get_all(self) -> List[Order]:
         return self.orders
+
+    def get_by_user_id(self, user_id: str) -> List[Order]:
+        orders = [order for order in self.orders if order.user_id == user_id]
+        if len(orders) == 0:
+            raise NotFoundError(user_id)
+
+        return orders
 
     def get_by_id(self, order_id: str) -> Order:
         for order in self.orders:
