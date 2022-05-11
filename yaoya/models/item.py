@@ -1,7 +1,4 @@
 from dataclasses import dataclass
-from typing import Literal
-
-ItemType = Literal["vegetable", "fruit"]
 
 
 @dataclass
@@ -10,4 +7,3 @@ class Item:
     name: str
     price: int
     producing_area: str
-    item_type: ItemType

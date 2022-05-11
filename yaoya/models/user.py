@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from datetime import date
 
-from yaoya.services.const import UserRole
+from yaoya.const import UserRole
 
 
 @dataclass

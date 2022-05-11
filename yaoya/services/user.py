@@ -1,8 +1,8 @@
 from datetime import date
 from typing import Optional, Protocol
 
+from yaoya.const import UserRole
 from yaoya.models.user import User
-from yaoya.services.const import UserRole
 
 
 class IUserAPIClientService(Protocol):

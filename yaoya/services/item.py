@@ -3,7 +3,7 @@ from typing import Optional, Protocol
 
 from mimesis import Field, Schema
 from mimesis.locales import Locale
-from yaoya.models.item import Item, ItemType
+from yaoya.models.item import Item
 from yaoya.services.base import NotFoundError
 
 
@@ -25,12 +25,12 @@ class IItemAPIClientService(Protocol):
 
 
 class MockItemAPIClientService(IItemAPIClientService):
-    def __init__(self, n: int = 10, item_type: ItemType = "vegetable") -> None:
+    def __init__(self, n: int = 10) -> None:
         _ = Field(locale=Locale.JA)
         schema = Schema(
             schema=lambda: {
                 "item_id": _("uuid"),
-                "name": _(item_type),
+                "name": _("vegetable"),
                 "price": randint(1, 5) * 100 - 2,
                 "producing_area": _("prefecture"),
             }
@@ -41,7 +41,6 @@ class MockItemAPIClientService(IItemAPIClientService):
                 name=data["name"],
                 price=data["price"],
                 producing_area=data["producing_area"],
-                item_type=item_type,
             )
             for data in schema.create(n)
         ]

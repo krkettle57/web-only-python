@@ -1,7 +1,7 @@
 import streamlit as st
+from yaoya.const import PageId
 from yaoya.models.item import Item
 from yaoya.pages.base import BasePage
-from yaoya.services.const import PageId
 from yaoya.services.item import IItemAPIClientService
 
 

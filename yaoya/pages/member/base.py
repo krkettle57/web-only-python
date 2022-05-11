@@ -1,6 +1,6 @@
 import streamlit as st
+from yaoya.const import UserRole
 from yaoya.pages.base import BasePage
-from yaoya.services.const import UserRole
 
 
 class MemberPage(BasePage):
