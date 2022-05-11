@@ -40,8 +40,7 @@ class CartPage(MemberPage):
         order = Order(user_id=cart.user_id)
         for cart_item in cart.cart_items:
             order.add_detail(
-                item_id=cart_item.item.item_id,
-                unit_price=cart_item.item.price,
+                item=cart_item.item,
                 quantity=cart_item.quantity,
             )
         order_api_client.insert(order)
