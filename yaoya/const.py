@@ -5,10 +5,10 @@ class SessionKey(Enum):
     USER_API_CLIENT = auto()
     ITEM_API_CLIENT = auto()
     ORDER_API_CLIENT = auto()
+    CART_API_CLIENT = auto()
     USER = auto()
     ITEM = auto()
     ORDER = auto()
-    CART = auto()
     PAGE_ID = auto()
     USERBOX = auto()
 

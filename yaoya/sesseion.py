@@ -1,10 +1,10 @@
 import streamlit as st
 
 from yaoya.const import PageId, SessionKey
-from yaoya.models.cart import Cart
 from yaoya.models.item import Item
 from yaoya.models.order import Order
 from yaoya.models.user import User
+from yaoya.services.cart import ICartAPIClientService
 from yaoya.services.item import IItemAPIClientService
 from yaoya.services.order import IOrderAPIClientService
 from yaoya.services.user import IUserAPIClientService
@@ -16,14 +16,16 @@ class StreamlitSessionManager:
         user_api_client: IUserAPIClientService,
         item_api_client: IItemAPIClientService,
         order_api_client: IOrderAPIClientService,
+        cart_api_client: ICartAPIClientService,
     ) -> None:
         self._session_state = st.session_state
         self._session_state[SessionKey.USER_API_CLIENT.name] = user_api_client
         self._session_state[SessionKey.ITEM_API_CLIENT.name] = item_api_client
         self._session_state[SessionKey.ORDER_API_CLIENT.name] = order_api_client
+        self._session_state[SessionKey.CART_API_CLIENT.name] = cart_api_client
         self._session_state[SessionKey.USER.name] = None
         self._session_state[SessionKey.ITEM.name] = None
-        self._session_state[SessionKey.CART.name] = None
+        self._session_state[SessionKey.ORDER.name] = None
         self._session_state[SessionKey.PAGE_ID.name] = PageId.PUBLIC_LOGIN.name
         self._session_state[SessionKey.USERBOX.name] = None
 
@@ -36,9 +38,6 @@ class StreamlitSessionManager:
     def get_order(self) -> Order:
         return self._session_state[SessionKey.ORDER.name]
 
-    def get_cart(self) -> Cart:
-        return self._session_state[SessionKey.CART.name]
-
     def get_user_api_client(self) -> IUserAPIClientService:
         return self._session_state[SessionKey.USER_API_CLIENT.name]
 
@@ -48,15 +47,15 @@ class StreamlitSessionManager:
     def get_order_api_client(self) -> IOrderAPIClientService:
         return self._session_state[SessionKey.ORDER_API_CLIENT.name]
 
+    def get_cart_api_client(self) -> ICartAPIClientService:
+        return self._session_state[SessionKey.CART_API_CLIENT.name]
+
     def set_user(self, user: User) -> None:
         self._session_state[SessionKey.USER.name] = user
 
         # 表示するユーザ名を更新
         userbox = self._session_state[SessionKey.USERBOX.name]
         userbox.text(f"ユーザ名: {user.name}")
-
-        # カートを更新
-        self._session_state[SessionKey.CART.name] = Cart(user.user_id)
 
     def set_item(self, item: Item) -> None:
         self._session_state[SessionKey.ITEM.name] = item

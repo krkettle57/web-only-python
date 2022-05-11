@@ -7,6 +7,7 @@ from yaoya.pages.member.order_list import OrderListPage
 from yaoya.pages.public.item_detail import ItemDetailPage
 from yaoya.pages.public.item_list import ItemListPage
 from yaoya.pages.public.login import LoginPage
+from yaoya.services.cart import MockCartAPIClientService
 from yaoya.services.item import MockItemAPIClientService
 from yaoya.services.order import MockOrderAPIClientService
 from yaoya.services.user import MockUserAPIClientService
@@ -18,6 +19,7 @@ def init_session() -> StreamlitSessionManager:
         user_api_client=MockUserAPIClientService(),
         item_api_client=MockItemAPIClientService(),
         order_api_client=MockOrderAPIClientService(),
+        cart_api_client=MockCartAPIClientService(),
     )
     return ssm
 

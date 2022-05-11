@@ -1,5 +1,4 @@
 import streamlit as st
-from yaoya.models.cart import Cart
 from yaoya.models.item import Item
 from yaoya.models.user import User
 from yaoya.pages.base import BasePage
@@ -14,8 +13,7 @@ class ItemDetailPage(BasePage):
 
         # カートイン
         user: User = self.ssm.get_user()
-        cart: Cart = self.ssm.get_cart()
-        if not self.render_cart_in(user, cart, item):
+        if not self.render_cart_in(user, item):
             return
 
     def render_item_detail(self, item: Item) -> bool:
@@ -41,20 +39,21 @@ class ItemDetailPage(BasePage):
 
         return True
 
-    def render_cart_in(self, user: User, cart: Cart, item: Item) -> bool:
+    def render_cart_in(self, user: User, item: Item) -> bool:
         if user is None:
             st.warning("カートに追加するためにはログインが必要です。")
             return False
 
         with st.form("item_deteil_form"):
             st.number_input("数量", step=1, min_value=1, max_value=9, key="_quantity")
-            kwargs = dict(cart=cart, item=item)
+            kwargs = dict(user_id=user.user_id, item=item)
             st.form_submit_button(label="注文", on_click=self.cart_in, kwargs=kwargs)
 
         return True
 
-    def cart_in(self, cart: Cart, item: Item) -> None:
+    def cart_in(self, user_id: str, item: Item) -> None:
+        cart_api_client = self.ssm.get_cart_api_client()
         quantity = st.session_state["_quantity"]
-        cart.add_item(item=item, quantity=int(quantity))
+        cart_api_client.add_item(user_id=user_id, item=item, quantity=int(quantity))
         st.sidebar.success("カートに追加しました")
         st.session_state["_quantity"] = 1
