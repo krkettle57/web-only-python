@@ -1,4 +1,6 @@
 import streamlit as st
+from yaoya.const import PageId
+from yaoya.models.order import Order
 from yaoya.pages.member.base import MemberPage
 
 
@@ -32,8 +34,8 @@ class OrderListPage(MemberPage):
             col_id.write(order.order_id[-8:])
             col_total.write(order.total_price)
             col_date.write(order.ordered_at.strftime("%Y-%m-%d %H:%M:%S"))
-            col_button.button("詳細", on_click=self.order_detail)
+            col_button.button("詳細", on_click=self.order_detail, args=(order,))
 
-    def order_detail(self) -> None:
-        # オーダー詳細ページへ遷移
-        pass
+    def order_detail(self, order: Order) -> None:
+        self.ssm.set_order(order)
+        self.ssm.set_page_id(PageId.MEMBER_ORDER_DETAIL)

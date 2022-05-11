@@ -7,6 +7,7 @@ class SessionKey(Enum):
     ORDER_API_CLIENT = auto()
     USER = auto()
     ITEM = auto()
+    ORDER = auto()
     CART = auto()
     PAGE_ID = auto()
     USERBOX = auto()
@@ -18,6 +19,7 @@ class PageId(Enum):
     PUBLIC_ITEM_DETAIL = auto()
     MEMBER_CART = auto()
     MEMBER_ORDER_LIST = auto()
+    MEMBER_ORDER_DETAIL = auto()
 
 
 class UserRole(Enum):

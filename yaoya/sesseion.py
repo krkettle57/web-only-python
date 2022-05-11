@@ -3,6 +3,7 @@ import streamlit as st
 from yaoya.const import PageId, SessionKey
 from yaoya.models.cart import Cart
 from yaoya.models.item import Item
+from yaoya.models.order import Order
 from yaoya.models.user import User
 from yaoya.services.item import IItemAPIClientService
 from yaoya.services.order import IOrderAPIClientService
@@ -32,6 +33,9 @@ class StreamlitSessionManager:
     def get_item(self) -> Item:
         return self._session_state[SessionKey.ITEM.name]
 
+    def get_order(self) -> Order:
+        return self._session_state[SessionKey.ORDER.name]
+
     def get_cart(self) -> Cart:
         return self._session_state[SessionKey.CART.name]
 
@@ -56,6 +60,9 @@ class StreamlitSessionManager:
 
     def set_item(self, item: Item) -> None:
         self._session_state[SessionKey.ITEM.name] = item
+
+    def set_order(self, order: Order) -> None:
+        self._session_state[SessionKey.ORDER.name] = order
 
     def set_page_id(self, page_id: PageId) -> None:
         self._session_state[SessionKey.PAGE_ID.name] = page_id.name
