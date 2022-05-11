@@ -1,5 +1,5 @@
 from datetime import date
-from typing import List, Optional, Protocol
+from typing import Optional, Protocol
 
 from yaoya.models.user import User
 from yaoya.services.const import UserRole
@@ -12,7 +12,7 @@ class IUserAPIClientService(Protocol):
 
 class MockUserAPIClientService(IUserAPIClientService):
     def __init__(self) -> None:
-        self.users: List[User] = [
+        self.users: list[User] = [
             User(
                 user_id="member", name="会員", birthday=date(2000, 1, 1), email="guest@example.com", role=UserRole.MEMBER
             ),

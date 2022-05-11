@@ -1,5 +1,3 @@
-from typing import List
-
 from yaoya.app import MultiPageApp
 from yaoya.pages.base import BasePage
 from yaoya.pages.member.cart import CartPage
@@ -23,7 +21,7 @@ def init_session() -> StreamlitSessionManager:
     return ssm
 
 
-def init_pages(ssm: StreamlitSessionManager) -> List[BasePage]:
+def init_pages(ssm: StreamlitSessionManager) -> list[BasePage]:
     pages = [
         LoginPage(page_id=PageId.PUBLIC_LOGIN.name, title="ログイン", ssm=ssm),
         ItemListPage(page_id=PageId.PUBLIC_ITEM_LIST.name, title="商品一覧", ssm=ssm),
@@ -34,6 +32,6 @@ def init_pages(ssm: StreamlitSessionManager) -> List[BasePage]:
     return pages
 
 
-def init_app(ssm: StreamlitSessionManager, pages: List[BasePage]) -> MultiPageApp:
+def init_app(ssm: StreamlitSessionManager, pages: list[BasePage]) -> MultiPageApp:
     app = MultiPageApp(ssm, pages)
     return app

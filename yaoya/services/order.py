@@ -1,14 +1,14 @@
-from typing import List, Protocol
+from typing import Protocol
 
 from yaoya.models.order import Order
 from yaoya.services.base import NotFoundError
 
 
 class IOrderAPIClientService(Protocol):
-    def get_all(self) -> List[Order]:
+    def get_all(self) -> list[Order]:
         pass
 
-    def get_by_user_id(self, user_id: str) -> List[Order]:
+    def get_by_user_id(self, user_id: str) -> list[Order]:
         pass
 
     def get_by_id(self, order_id: str) -> Order:
@@ -20,12 +20,12 @@ class IOrderAPIClientService(Protocol):
 
 class MockOrderAPIClientService(IOrderAPIClientService):
     def __init__(self) -> None:
-        self.orders: List[Order] = []
+        self.orders: list[Order] = []
 
-    def get_all(self) -> List[Order]:
+    def get_all(self) -> list[Order]:
         return self.orders
 
-    def get_by_user_id(self, user_id: str) -> List[Order]:
+    def get_by_user_id(self, user_id: str) -> list[Order]:
         orders = [order for order in self.orders if order.user_id == user_id]
         if len(orders) == 0:
             raise NotFoundError(user_id)

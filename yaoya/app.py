@@ -1,5 +1,3 @@
-from typing import List
-
 import streamlit as st
 
 from yaoya.exceptions import YaoyaError
@@ -9,7 +7,7 @@ from yaoya.sesseion import StreamlitSessionManager
 
 
 class MultiPageApp:
-    def __init__(self, ssm: StreamlitSessionManager, pages: List[BasePage], nav_label: str = "ページ一覧") -> None:
+    def __init__(self, ssm: StreamlitSessionManager, pages: list[BasePage], nav_label: str = "ページ一覧") -> None:
         self.pages = {page.page_id: page for page in pages}
         self.ssm = ssm
         self.nav_label = nav_label

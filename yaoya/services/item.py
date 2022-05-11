@@ -1,5 +1,5 @@
 from random import randint
-from typing import List, Optional, Protocol
+from typing import Optional, Protocol
 
 from mimesis import Field, Schema
 from mimesis.locales import Locale
@@ -8,7 +8,7 @@ from yaoya.services.base import NotFoundError
 
 
 class IItemAPIClientService(Protocol):
-    def get_all(self, offset: Optional[int] = None, limit: Optional[int] = None) -> List[Item]:
+    def get_all(self, offset: Optional[int] = None, limit: Optional[int] = None) -> list[Item]:
         pass
 
     def get_by_id(self, item_id: str) -> Item:
@@ -47,7 +47,7 @@ class MockItemAPIClientService(IItemAPIClientService):
         ]
         self.items = items
 
-    def get_all(self, offset: Optional[int] = None, limit: Optional[int] = None) -> List[Item]:
+    def get_all(self, offset: Optional[int] = None, limit: Optional[int] = None) -> list[Item]:
         offset_ = 0
         limit_ = len(self.items)
 

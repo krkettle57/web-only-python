@@ -1,5 +1,4 @@
 from dataclasses import dataclass, field
-from typing import List
 
 from yaoya.models.item import Item
 
@@ -14,7 +13,7 @@ class CartItem:
 @dataclass
 class Cart:
     user_id: str
-    cart_items: List[CartItem] = field(default_factory=list)
+    cart_items: list[CartItem] = field(default_factory=list)
 
     def add_item(self, item: Item, quantity: int) -> None:
         cart_item = CartItem(
