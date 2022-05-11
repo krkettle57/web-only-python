@@ -47,13 +47,14 @@ class ItemDetailPage(BasePage):
             return False
 
         with st.form("item_deteil_form"):
-            quantity = st.number_input("数量", step=1, min_value=1, max_value=9, key="_quantity")
-            kwargs = dict(cart=cart, item=item, quantity=quantity)
+            st.number_input("数量", step=1, min_value=1, max_value=9, key="_quantity")
+            kwargs = dict(cart=cart, item=item)
             st.form_submit_button(label="注文", on_click=self.cart_in, kwargs=kwargs)
 
         return True
 
-    def cart_in(self, cart: Cart, item: Item, quantity: int) -> None:
+    def cart_in(self, cart: Cart, item: Item) -> None:
+        quantity = st.session_state["_quantity"]
         cart.add_item(item=item, quantity=int(quantity))
         st.sidebar.success("カートに追加しました")
         st.session_state["_quantity"] = 1
