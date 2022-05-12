@@ -17,10 +17,10 @@ class MockItemAPIClientService(IItemAPIClientService):
     def __init__(self, n: int = 10) -> None:
         self.dbname = "mock_items.db"
         if not Path(self.dbname).exists():
-            mock_items = self.create_mock_items(n)
-            self.init_item_table(mock_items)
+            mock_items = self._create_mock_items(n)
+            self._init_item_table(mock_items)
 
-    def create_mock_items(self, n: int) -> list[Item]:
+    def _create_mock_items(self, n: int) -> list[Item]:
         _ = Field(locale=Locale.JA)
         schema = Schema(
             schema=lambda: {
@@ -41,7 +41,7 @@ class MockItemAPIClientService(IItemAPIClientService):
         ]
         return mock_items
 
-    def init_item_table(self, mock_items: list[Item]) -> None:
+    def _init_item_table(self, mock_items: list[Item]) -> None:
         conn = sqlite3.connect(self.dbname)
         cur = conn.cursor()
         cur.execute(

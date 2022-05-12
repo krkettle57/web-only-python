@@ -32,9 +32,9 @@ class MockUserAPIClientService(IUserAPIClientService):
                     role=UserRole.ADMIN,
                 ),
             ]
-            self.init_user_table(mock_users)
+            self._init_user_table(mock_users)
 
-    def init_user_table(self, mock_users: list[User]) -> None:
+    def _init_user_table(self, mock_users: list[User]) -> None:
         conn = sqlite3.connect(self.dbname)
         cur = conn.cursor()
         cur.execute(
