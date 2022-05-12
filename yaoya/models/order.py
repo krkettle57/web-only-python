@@ -1,17 +1,19 @@
+from dataclasses import dataclass
 from datetime import datetime
-from typing import NamedTuple
 
 from yaoya.models.item import Item
 
 
-class OrderDetail(NamedTuple):
+@dataclass(frozen=True)
+class OrderDetail:
     order_no: int
     item: Item
     quantity: int
     subtotal_price: int
 
 
-class Order(NamedTuple):
+@dataclass(frozen=True)
+class Order:
     order_id: str
     user_id: str
     total_price: int

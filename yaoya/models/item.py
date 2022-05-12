@@ -1,7 +1,8 @@
-from typing import NamedTuple
+from dataclasses import dataclass
 
 
-class Item(NamedTuple):
+@dataclass(frozen=True)
+class Item:
     item_id: str
     name: str
     price: int
