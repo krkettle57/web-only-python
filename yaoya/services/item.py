@@ -1,5 +1,7 @@
+import sqlite3
+from pathlib import Path
 from random import randint
-from typing import Optional, Protocol
+from typing import Protocol
 
 from mimesis import Field, Schema
 from mimesis.locales import Locale
@@ -7,12 +9,18 @@ from yaoya.models.item import Item
 
 
 class IItemAPIClientService(Protocol):
-    def get_all(self, offset: Optional[int] = None, limit: Optional[int] = None) -> list[Item]:
+    def get_all(self) -> list[Item]:
         pass
 
 
 class MockItemAPIClientService(IItemAPIClientService):
     def __init__(self, n: int = 10) -> None:
+        self.dbname = "mock_items.db"
+        if not Path(self.dbname).exists():
+            mock_items = self.create_mock_items(n)
+            self.init_item_table(mock_items)
+
+    def create_mock_items(self, n: int) -> list[Item]:
         _ = Field(locale=Locale.JA)
         schema = Schema(
             schema=lambda: {
@@ -22,7 +30,7 @@ class MockItemAPIClientService(IItemAPIClientService):
                 "producing_area": _("prefecture"),
             }
         )
-        items = [
+        mock_items = [
             Item(
                 item_id=data["item_id"],
                 name=data["name"],
@@ -31,16 +39,53 @@ class MockItemAPIClientService(IItemAPIClientService):
             )
             for data in schema.create(n)
         ]
-        self.items = items
+        return mock_items
 
-    def get_all(self, offset: Optional[int] = None, limit: Optional[int] = None) -> list[Item]:
-        offset_ = 0
-        limit_ = len(self.items)
+    def init_item_table(self, mock_items: list[Item]) -> None:
+        conn = sqlite3.connect(self.dbname)
+        cur = conn.cursor()
+        cur.execute(
+            """
+            CREATE TABLE items(
+                item_id TEXT PRIMARY KEY,
+                name TEXT,
+                price INTEGER,
+                producing_area TEXT
+            )
+            """
+        )
+        for item in mock_items:
+            cur.execute(
+                """
+            INSERT INTO items
+            VALUES (
+                :item_id,
+                :name,
+                :price,
+                :producing_area
+            )
+            """,
+                (
+                    item.item_id,
+                    item.name,
+                    item.price,
+                    item.producing_area,
+                ),
+            )
+        conn.commit()
+        conn.close()
 
-        if offset is not None:
-            offset_ = offset
-
-        if limit is not None:
-            limit_ = limit
-
-        return self.items[offset_ : offset_ + limit_]
+    def get_all(self) -> list[Item]:
+        conn = sqlite3.connect(self.dbname)
+        cur = conn.cursor()
+        cur.execute("SELECT item_id, name, price, producing_area FROM items")
+        items_data = cur.fetchall()
+        return [
+            Item(
+                item_id=item_data[0],
+                name=item_data[1],
+                price=item_data[2],
+                producing_area=item_data[3],
+            )
+            for item_data in items_data
+        ]
