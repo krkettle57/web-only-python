@@ -84,5 +84,5 @@ class MockUserAPIClientService(IUserAPIClientService):
             name=user_data[1],
             birthday=datetime.fromisoformat(user_data[2]),
             email=user_data[3],
-            role=user_data[4],
+            role=UserRole[user_data[4]],
         )
