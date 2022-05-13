@@ -8,6 +8,7 @@ authors = ["alivelimb <krkettle57@gmail.com>"]
 python = "^3.9"
 mimesis = "^5.3.0"
 streamlit = "^1.8.1"
+dataset = "^1.5.2"
 
 [tool.poetry.dev-dependencies]
 mypy = "^0.942"
