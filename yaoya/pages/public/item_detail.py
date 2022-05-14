@@ -48,7 +48,7 @@ class ItemDetailPage(BasePage):
         with st.form("item_deteil_form"):
             st.number_input("数量", step=1, min_value=1, max_value=9, key="_quantity")
             kwargs = dict(item=item)
-            st.form_submit_button(label="注文", on_click=self._cart_in, kwargs=kwargs)
+            st.form_submit_button(label="カートに追加", on_click=self._cart_in, kwargs=kwargs)
 
         return True
 
