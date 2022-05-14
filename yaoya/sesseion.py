@@ -30,6 +30,7 @@ class StreamlitSessionManager:
         self._session_state[SessionKey.ITEM.name] = None
         self._session_state[SessionKey.ORDER.name] = None
         self._session_state[SessionKey.PAGE_ID.name] = PageId.PUBLIC_LOGIN.name
+        self._session_state[SessionKey.SESSION_ID.name] = None
         self._session_state[SessionKey.USERBOX.name] = None
 
     def get_user(self) -> User:
@@ -40,6 +41,9 @@ class StreamlitSessionManager:
 
     def get_order(self) -> Order:
         return self._session_state[SessionKey.ORDER.name]
+
+    def get_session_id(self) -> str:
+        return self._session_state[SessionKey.SESSION_ID.name]
 
     def get_auth_api_client(self) -> IAuthAPIClientService:
         return self._session_state[SessionKey.AUTH_API_CLIENT.name]
@@ -71,6 +75,9 @@ class StreamlitSessionManager:
 
     def set_page_id(self, page_id: PageId) -> None:
         self._session_state[SessionKey.PAGE_ID.name] = page_id.name
+
+    def set_session_id(self, session_id: str) -> None:
+        self._session_state[SessionKey.SESSION_ID.name] = session_id
 
     def show_userbox(self) -> None:
         # コンストラクタで初期化するとStreamlitの初期化処理中にStreamlitの更新処理が入り、以下のエラーが発生する

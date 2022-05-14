@@ -27,3 +27,4 @@ class LoginPage(BasePage):
             # ログインに成功した場合、成功メッセージを表示する
             st.sidebar.success("ログインに成功しました。")
             self.ssm.set_user(user)
+            self.ssm.set_session_id(session_id)

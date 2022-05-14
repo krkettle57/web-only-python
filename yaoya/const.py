@@ -11,6 +11,7 @@ class SessionKey(Enum):
     ITEM = auto()
     ORDER = auto()
     PAGE_ID = auto()
+    SESSION_ID = auto()
     USERBOX = auto()
 
 
