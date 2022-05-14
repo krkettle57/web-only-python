@@ -9,15 +9,17 @@ from yaoya.pages.public.item_list import ItemListPage
 from yaoya.pages.public.login import LoginPage
 from yaoya.services.cart import MockCartAPIClientService
 from yaoya.services.item import MockItemAPIClientService
+from yaoya.services.mock import MockDB
 from yaoya.services.order import MockOrderAPIClientService
 from yaoya.services.user import MockUserAPIClientService
 from yaoya.sesseion import StreamlitSessionManager
 
 
 def init_session() -> StreamlitSessionManager:
+    mockdb = MockDB()
     ssm = StreamlitSessionManager(
-        user_api_client=MockUserAPIClientService(),
-        item_api_client=MockItemAPIClientService(),
+        user_api_client=MockUserAPIClientService(mockdb),
+        item_api_client=MockItemAPIClientService(mockdb),
         order_api_client=MockOrderAPIClientService(),
         cart_api_client=MockCartAPIClientService(),
     )
