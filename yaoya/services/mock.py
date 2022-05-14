@@ -14,8 +14,9 @@ from yaoya.models.user import User
 
 
 class MockDB:
-    def __init__(self) -> None:
-        self._dbname = "sqlite:///mock.db"
+    def __init__(self, dbpath: Path) -> None:
+        s_dbpath = str(dbpath)
+        self._dbname = f"sqlite:///{s_dbpath}"
         self._init_mock_db()
 
     @contextmanager

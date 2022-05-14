@@ -1,4 +1,5 @@
 from pathlib import Path
+from tempfile import TemporaryDirectory
 
 from yaoya.app import MultiPageApp
 from yaoya.const import PageId
@@ -19,8 +20,10 @@ from yaoya.sesseion import StreamlitSessionManager
 
 
 def init_session() -> StreamlitSessionManager:
-    mockdb = MockDB()
-    session_db = MockSessionDB(Path("session.json"))
+    mockdir = Path(TemporaryDirectory().name)
+    mockdir.mkdir(exist_ok=True)
+    mockdb = MockDB(mockdir.joinpath("mock.db"))
+    session_db = MockSessionDB(mockdir.joinpath("session.json"))
     ssm = StreamlitSessionManager(
         auth_api_client=MockAuthAPIClientService(mockdb, session_db),
         user_api_client=MockUserAPIClientService(mockdb, session_db),
