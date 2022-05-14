@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "web-only-python"
-version = "0.1.0"
-description = ""
+version = "1.0.0"
+description = "Pythonだけで作るウェブアプリケーション"
 authors = ["alivelimb <krkettle57@gmail.com>"]
 
 [tool.poetry.dependencies]
