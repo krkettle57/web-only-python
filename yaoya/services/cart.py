@@ -1,49 +1,65 @@
 from typing import Protocol
 
+from tinydb import Query
 from yaoya.models.cart import Cart, CartItem
-from yaoya.models.item import Item
+from yaoya.models.session import Session
+from yaoya.services.mock import MockSessionDB
 
 
 class ICartAPIClientService(Protocol):
-    def get_by_user_id(self, user_id: str) -> Cart:
+    def get_cart(self, session_id: str) -> Cart:
         pass
 
-    def add_item(self, user_id: str, item: Item, quantity: int) -> None:
+    def add_item(self, session_id: str, cart_item: CartItem) -> None:
         pass
 
-    def clear_cart(self, user_id: str) -> None:
+    def clear_cart(self, session_id: str) -> None:
         pass
 
 
 class MockCartAPIClientService(ICartAPIClientService):
-    def __init__(self) -> None:
-        self.carts: dict[str, Cart] = dict()
+    def __init__(self, session_db: MockSessionDB) -> None:
+        self.session_db = session_db
 
-    def _init_cart(self, user_id: str) -> None:
-        if user_id not in self.carts:
-            self.carts[user_id] = Cart(user_id=user_id, cart_items=list(), total_price=0)
+    def get_cart(self, session_id: str) -> Cart:
+        with self.session_db.connect() as db:
+            query = Query()
+            cart_data = db.search(query.session_id == session_id)
 
-    def get_by_user_id(self, user_id: str) -> Cart:
-        self._init_cart(user_id)
-        return self.carts[user_id]
+        return Cart.from_dict(cart_data[0]["cart"])
 
-    def add_item(self, user_id: str, item: Item, quantity: int) -> None:
-        self._init_cart(user_id)
+    def add_item(self, session_id: str, cart_item: CartItem) -> None:
+        def _transform(doc: dict) -> dict:
+            session = Session.from_dict(doc)
+            cart = session.cart
+            new_cart_items = [*cart.cart_items, cart_item]
+            new_total_price = cart_item.item.price * cart_item.quantity + cart.total_price
+            new_cart = Cart(
+                cart.user_id,
+                cart_items=new_cart_items,
+                total_price=new_total_price,
+            )
+            new_session = Session(
+                session_id=session.session_id,
+                user_id=session.user_id,
+                cart=new_cart,
+            )
+            return new_session.to_dict()
 
-        # カートアイテム生成
-        cart_item = CartItem(
-            item_no=len(self.carts[user_id].cart_items) + 1,
-            item=item,
-            quantity=quantity,
-        )
+        with self.session_db.connect() as db:
+            query = Query()
+            db.update(_transform, query.session_id == session_id)
 
-        # カート更新
-        cart = self.carts[user_id]
-        self.carts[user_id] = Cart(
-            user_id=cart.user_id,
-            cart_items=[*cart.cart_items, cart_item],
-            total_price=cart.total_price + (item.price * quantity),
-        )
+    def clear_cart(self, session_id: str) -> None:
+        def _transform(doc: dict) -> dict:
+            session = Session.from_dict(doc)
+            new_session = Session(
+                session_id=session.session_id,
+                user_id=session.user_id,
+                cart=Cart(user_id=session.user_id),
+            )
+            return new_session.to_dict()
 
-    def clear_cart(self, user_id: str) -> None:
-        self.carts[user_id] = Cart(user_id=user_id, cart_items=list(), total_price=0)
+        with self.session_db.connect() as db:
+            query = Query()
+            db.update(_transform, query.session_id == session_id)

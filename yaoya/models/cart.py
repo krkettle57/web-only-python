@@ -2,29 +2,41 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from yaoya.models.base import BaseDataModel
 from yaoya.models.item import Item
 
 
 @dataclass(frozen=True)
-class CartItem:
-    item_no: int
+class CartItem(BaseDataModel):
     item: Item
-    quantity: int
+    quantity: int = 0
+
+    def to_dict(self) -> dict:
+        return dict(
+            item=self.item.to_dict(),
+            quantity=self.quantity,
+        )
 
     @classmethod
     def from_dict(cls, data: dict) -> CartItem:
         return CartItem(
-            item_no=data["item_no"],
             item=data["item"],
             quantity=data["quantity"],
         )
 
 
 @dataclass(frozen=True)
-class Cart:
+class Cart(BaseDataModel):
     user_id: str
-    cart_items: list[CartItem]
-    total_price: int
+    cart_items: list[CartItem] = list()
+    total_price: int = 0
+
+    def to_dict(self) -> dict:
+        return dict(
+            user_id=self.user_id,
+            cart_items=[cart_item.to_dict() for cart_item in self.cart_items],
+            total_price=self.total_price,
+        )
 
     @classmethod
     def from_dict(cls, data: dict) -> Cart:
