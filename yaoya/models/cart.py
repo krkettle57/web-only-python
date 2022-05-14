@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from yaoya.models.base import BaseDataModel
 from yaoya.models.item import Item
@@ -28,7 +28,7 @@ class CartItem(BaseDataModel):
 @dataclass(frozen=True)
 class Cart(BaseDataModel):
     user_id: str
-    cart_items: list[CartItem] = list()
+    cart_items: list[CartItem] = field(default_factory=list)
     total_price: int = 0
 
     def to_dict(self) -> dict:
