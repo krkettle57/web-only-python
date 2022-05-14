@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 
 
 @dataclass(frozen=True)
@@ -9,6 +9,9 @@ class Item:
     name: str
     price: int
     producing_area: str
+
+    def to_dict(self) -> dict:
+        return asdict(self)
 
     @classmethod
     def from_dict(cls, data: dict) -> Item:

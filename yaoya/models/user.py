@@ -4,15 +4,25 @@ from dataclasses import dataclass
 from datetime import date
 
 from yaoya.const import UserRole
+from yaoya.models.base import BaseDataModel
 
 
 @dataclass(frozen=True)
-class User:
+class User(BaseDataModel):
     user_id: str
     name: str
     birthday: date
     email: str
     role: UserRole
+
+    def to_dict(self) -> dict:
+        return dict(
+            user_id=self.user_id,
+            name=self.name,
+            birthday=self.birthday,
+            email=self.email,
+            role=self.role.name,
+        )
 
     @classmethod
     def from_dict(cls, data: dict) -> User:
@@ -21,5 +31,5 @@ class User:
             name=data["name"],
             birthday=data["birthday"],
             email=data["email"],
-            role=data["role"],
+            role=UserRole[data["role"]],
         )
