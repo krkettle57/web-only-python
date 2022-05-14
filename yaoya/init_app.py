@@ -22,7 +22,7 @@ def init_session() -> StreamlitSessionManager:
     mockdb = MockDB()
     session_db = MockSessionDB(Path("session.json"))
     ssm = StreamlitSessionManager(
-        auth_api_client=MockAuthAPIClientService(session_db),
+        auth_api_client=MockAuthAPIClientService(mockdb, session_db),
         user_api_client=MockUserAPIClientService(mockdb, session_db),
         item_api_client=MockItemAPIClientService(mockdb),
         order_api_client=MockOrderAPIClientService(),

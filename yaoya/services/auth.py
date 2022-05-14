@@ -2,7 +2,7 @@ from typing import Protocol
 
 from yaoya.models.cart import Cart
 from yaoya.models.session import Session
-from yaoya.services.mock import MockSessionDB
+from yaoya.services.mock import MockDB, MockSessionDB
 
 
 class IAuthAPIClientService(Protocol):
@@ -11,7 +11,8 @@ class IAuthAPIClientService(Protocol):
 
 
 class MockAuthAPIClientService(IAuthAPIClientService):
-    def __init__(self, session_db: MockSessionDB) -> None:
+    def __init__(self, mockdb: MockDB, session_db: MockSessionDB) -> None:
+        self.mockdb = mockdb
         self.session_db = session_db
 
     def login(self, user_id: str, password: str) -> str:
