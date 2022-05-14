@@ -1,11 +1,13 @@
 from collections.abc import Generator
 from contextlib import contextmanager
 from datetime import date
+from pathlib import Path
 from random import randint
 
 import dataset
 from mimesis import Field, Schema
 from mimesis.locales import Locale
+from tinydb import TinyDB
 from yaoya.const import UserRole
 from yaoya.models.item import Item
 from yaoya.models.user import User
@@ -84,3 +86,15 @@ class MockDB:
 
     def _create_mock_cart_table(self) -> None:
         pass
+
+
+class MockSessionDB:
+    def __init__(self, dbpath: Path) -> None:
+        self._db = TinyDB(dbpath)
+
+    @contextmanager
+    def connect(self) -> Generator[TinyDB, None, None]:
+        try:
+            yield self._db
+        except Exception as e:
+            raise e
