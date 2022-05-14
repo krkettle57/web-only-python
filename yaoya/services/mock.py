@@ -32,8 +32,6 @@ class MockDB:
     def _init_mock_db(self) -> None:
         self._create_mock_user_table()
         self._create_mock_item_table()
-        self._create_mock_order_table()
-        self._create_mock_cart_table()
 
     def _create_mock_user_table(self) -> None:
         mock_users = [
@@ -80,12 +78,6 @@ class MockDB:
             table: dataset.Table = db["items"]
             for mock_item in mock_items:
                 table.insert(mock_item.to_dict())
-
-    def _create_mock_order_table(self) -> None:
-        pass
-
-    def _create_mock_cart_table(self) -> None:
-        pass
 
 
 class MockSessionDB:

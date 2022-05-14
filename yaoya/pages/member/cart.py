@@ -46,8 +46,7 @@ class CartPage(MemberPage):
         session_id = self.ssm.get_session_id()
         order_api_client = self.ssm.get_order_api_client()
         cart_api_client = self.ssm.get_cart_api_client()
-        cart = cart_api_client.get_cart(session_id)
 
-        order_api_client.order_commit(cart)
+        order_api_client.order_commit(session_id)
         cart_api_client.clear_cart(session_id)
         st.sidebar.success("注文が完了しました")

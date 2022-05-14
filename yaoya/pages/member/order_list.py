@@ -10,7 +10,7 @@ class OrderListPage(MemberPage):
         if not self.validate_user():
             return
 
-        user = self.ssm.get_user()
+        session_id = self.ssm.get_session_id()
         order_api_client = self.ssm.get_order_api_client()
 
         # タイトル表示
@@ -25,7 +25,7 @@ class OrderListPage(MemberPage):
 
         # 注文一覧を取得
         try:
-            orders = order_api_client.get_by_user_id(user.user_id)
+            orders = order_api_client.get_orders(session_id)
         except NotFoundError:
             st.warning("注文履歴はありません。")
             return

@@ -25,7 +25,7 @@ def init_session() -> StreamlitSessionManager:
         auth_api_client=MockAuthAPIClientService(mockdb, session_db),
         user_api_client=MockUserAPIClientService(mockdb, session_db),
         item_api_client=MockItemAPIClientService(mockdb),
-        order_api_client=MockOrderAPIClientService(),
+        order_api_client=MockOrderAPIClientService(mockdb, session_db),
         cart_api_client=MockCartAPIClientService(session_db),
     )
     return ssm
