@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from yaoya.app import MultiPageApp
 from yaoya.const import PageId
 from yaoya.pages.base import BasePage
@@ -7,9 +9,10 @@ from yaoya.pages.member.order_list import OrderListPage
 from yaoya.pages.public.item_detail import ItemDetailPage
 from yaoya.pages.public.item_list import ItemListPage
 from yaoya.pages.public.login import LoginPage
+from yaoya.services.auth import MockAuthAPIClientService
 from yaoya.services.cart import MockCartAPIClientService
 from yaoya.services.item import MockItemAPIClientService
-from yaoya.services.mock import MockDB
+from yaoya.services.mock import MockDB, MockSessionDB
 from yaoya.services.order import MockOrderAPIClientService
 from yaoya.services.user import MockUserAPIClientService
 from yaoya.sesseion import StreamlitSessionManager
@@ -17,11 +20,13 @@ from yaoya.sesseion import StreamlitSessionManager
 
 def init_session() -> StreamlitSessionManager:
     mockdb = MockDB()
+    session_db = MockSessionDB(Path("session.json"))
     ssm = StreamlitSessionManager(
-        user_api_client=MockUserAPIClientService(mockdb),
+        auth_api_client=MockAuthAPIClientService(session_db),
+        user_api_client=MockUserAPIClientService(mockdb, session_db),
         item_api_client=MockItemAPIClientService(mockdb),
         order_api_client=MockOrderAPIClientService(),
-        cart_api_client=MockCartAPIClientService(),
+        cart_api_client=MockCartAPIClientService(session_db),
     )
     return ssm
 

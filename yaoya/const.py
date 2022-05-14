@@ -2,6 +2,7 @@ from enum import Enum, auto
 
 
 class SessionKey(Enum):
+    AUTH_API_CLIENT = auto()
     USER_API_CLIENT = auto()
     ITEM_API_CLIENT = auto()
     ORDER_API_CLIENT = auto()
