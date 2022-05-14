@@ -20,7 +20,7 @@ class CartItem(BaseDataModel):
     @classmethod
     def from_dict(cls, data: dict) -> CartItem:
         return CartItem(
-            item=data["item"],
+            item=Item.from_dict(data["item"]),
             quantity=data["quantity"],
         )
 

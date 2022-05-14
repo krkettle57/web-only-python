@@ -1,3 +1,4 @@
+from collections.abc import Callable
 from typing import Protocol
 
 from tinydb import Query
@@ -29,7 +30,12 @@ class MockCartAPIClientService(ICartAPIClientService):
         return Cart.from_dict(cart_data[0]["cart"])
 
     def add_item(self, session_id: str, cart_item: CartItem) -> None:
-        def _transform(doc: dict) -> dict:
+        with self.session_db.connect() as db:
+            query = Query()
+            db.update(self._get_add_item_cb(cart_item), query.session_id == session_id)
+
+    def _get_add_item_cb(self, cart_item: CartItem) -> Callable[[dict], None]:
+        def transform(doc: dict) -> None:
             session = Session.from_dict(doc)
             cart = session.cart
             new_cart_items = [*cart.cart_items, cart_item]
@@ -44,22 +50,25 @@ class MockCartAPIClientService(ICartAPIClientService):
                 user_id=session.user_id,
                 cart=new_cart,
             )
-            return new_session.to_dict()
+            for key, value in new_session.to_dict().items():
+                doc[key] = value
 
-        with self.session_db.connect() as db:
-            query = Query()
-            db.update(_transform, query.session_id == session_id)
+        return transform
 
     def clear_cart(self, session_id: str) -> None:
-        def _transform(doc: dict) -> dict:
+        with self.session_db.connect() as db:
+            query = Query()
+            db.update(self._get_clear_cart_cb(), query.session_id == session_id)
+
+    def _get_clear_cart_cb(self) -> Callable[[dict], None]:
+        def transform(doc: dict) -> None:
             session = Session.from_dict(doc)
             new_session = Session(
                 session_id=session.session_id,
                 user_id=session.user_id,
                 cart=Cart(user_id=session.user_id),
             )
-            return new_session.to_dict()
+            for key, value in new_session.to_dict().items():
+                doc[key] = value
 
-        with self.session_db.connect() as db:
-            query = Query()
-            db.update(_transform, query.session_id == session_id)
+        return transform
