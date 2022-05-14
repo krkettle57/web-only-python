@@ -29,8 +29,8 @@ class ItemListPage(BasePage):
             no_col.write(index + 1)
             name_col.write(item.name)
             price_col.write(item.price)
-            button_col.button("詳細", key=item.item_id, on_click=self.detail_on_clink, args=(item,))
+            button_col.button("詳細", key=item.item_id, on_click=self._detail_on_clink, args=(item,))
 
-    def detail_on_clink(self, item: Item) -> None:
+    def _detail_on_clink(self, item: Item) -> None:
         self.ssm.set_item(item)
         self.ssm.set_page_id(PageId.PUBLIC_ITEM_DETAIL)
