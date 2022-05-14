@@ -3,9 +3,8 @@ from typing import Protocol
 import dataset
 from tinydb import Query
 from yaoya.models.user import User
+from yaoya.services.base import NotFoundError
 from yaoya.services.mock import MockDB, MockSessionDB
-
-from services.base import NotFoundError
 
 
 class IUserAPIClientService(Protocol):
@@ -27,7 +26,7 @@ class MockUserAPIClientService(IUserAPIClientService):
             user_data = table.find_one(user_id=user_id)
 
         if user_data is None:
-            raise NotFoundError()
+            raise NotFoundError(user_id)
 
         return User.from_dict(user_data)
 
