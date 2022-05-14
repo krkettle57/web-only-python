@@ -42,8 +42,8 @@ class OrderListPage(MemberPage):
             col_id.write(order.order_id[-8:])
             col_total.write(order.total_price)
             col_date.write(order.ordered_at.strftime("%Y-%m-%d %H:%M:%S"))
-            col_button.button("詳細", key=order.order_id, on_click=self.order_detail, args=(order,))
+            col_button.button("詳細", key=order.order_id, on_click=self._order_detail, args=(order,))
 
-    def order_detail(self, order: Order) -> None:
+    def _order_detail(self, order: Order) -> None:
         self.ssm.set_order(order)
         self.ssm.set_page_id(PageId.MEMBER_ORDER_DETAIL)

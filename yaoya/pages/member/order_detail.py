@@ -14,14 +14,14 @@ class OrderDetailPage(MemberPage):
         st.title(self.title)
 
         # 注文情報表示
-        if not self.render_order(order):
+        if not self._render_order(order):
             return
 
         # 注文詳細一覧表示
-        if not self.render_order_detail(order):
+        if not self._render_order_detail(order):
             return
 
-    def render_order(self, order: Order) -> bool:
+    def _render_order(self, order: Order) -> bool:
         if order is None:
             st.error("商品が選択されていません")
             return False
@@ -44,7 +44,7 @@ class OrderDetailPage(MemberPage):
 
         return True
 
-    def render_order_detail(self, order: Order) -> bool:
+    def _render_order_detail(self, order: Order) -> bool:
         # サブタイトル表示
         st.subheader("注文詳細一覧")
 
