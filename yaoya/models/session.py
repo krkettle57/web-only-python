@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass
 from uuid import uuid4
 
@@ -13,17 +14,19 @@ class Session(BaseDataModel):
     cart: Cart
     session_id: str = str(uuid4())
 
-    def to_dict(self) -> dict:
+    def to_dict(self) -> dict[str, str]:
+        cart_dict = self.cart.to_dict()
         return dict(
             session_id=self.session_id,
             user_id=self.user_id,
-            cart=self.cart.to_dict(),
+            cart=json.dumps(cart_dict),
         )
 
     @classmethod
-    def from_dict(cls, data: dict) -> Session:
+    def from_dict(cls, data: dict[str, str]) -> Session:
+        cart_dict = json.loads(data["cart"])
         return Session(
             session_id=data["session_id"],
             user_id=data["user_id"],
-            cart=Cart.from_dict(data["cart"]),
+            cart=Cart.from_dict(cart_dict),
         )

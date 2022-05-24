@@ -25,9 +25,10 @@ class MockCartAPIClientService(ICartAPIClientService):
     def get_cart(self, session_id: str) -> Cart:
         with self.session_db.connect() as db:
             query = Query()
-            cart_data = db.search(query.session_id == session_id)
+            session_dict = db.search(query.session_id == session_id)[0]
+            session = Session.from_dict(session_dict)
 
-        return Cart.from_dict(cart_data[0]["cart"])
+        return session.cart
 
     def add_item(self, session_id: str, cart_item: CartItem) -> None:
         with self.session_db.connect() as db:
@@ -46,8 +47,8 @@ class MockCartAPIClientService(ICartAPIClientService):
                 total_price=new_total_price,
             )
             new_session = Session(
-                session_id=session.session_id,
                 user_id=session.user_id,
+                session_id=session.session_id,
                 cart=new_cart,
             )
             for key, value in new_session.to_dict().items():
