@@ -36,12 +36,12 @@ def init_session() -> StreamlitSessionManager:
 
 def init_pages(ssm: StreamlitSessionManager) -> list[BasePage]:
     pages = [
-        LoginPage(page_id=PageId.PUBLIC_LOGIN.name, title="ログイン", ssm=ssm),
-        ItemListPage(page_id=PageId.PUBLIC_ITEM_LIST.name, title="商品一覧", ssm=ssm),
-        ItemDetailPage(page_id=PageId.PUBLIC_ITEM_DETAIL.name, title="商品詳細", ssm=ssm),
-        CartPage(page_id=PageId.MEMBER_CART.name, title="カート", ssm=ssm),
-        OrderListPage(page_id=PageId.MEMBER_ORDER_LIST.name, title="注文一覧", ssm=ssm),
-        OrderDetailPage(page_id=PageId.MEMBER_ORDER_DETAIL.name, title="注文詳細", ssm=ssm),
+        LoginPage(page_id=PageId.PUBLIC_LOGIN, title="ログイン", ssm=ssm),
+        ItemListPage(page_id=PageId.PUBLIC_ITEM_LIST, title="商品一覧", ssm=ssm),
+        ItemDetailPage(page_id=PageId.PUBLIC_ITEM_DETAIL, title="商品詳細", ssm=ssm),
+        CartPage(page_id=PageId.MEMBER_CART, title="カート", ssm=ssm),
+        OrderListPage(page_id=PageId.MEMBER_ORDER_LIST, title="注文一覧", ssm=ssm),
+        OrderDetailPage(page_id=PageId.MEMBER_ORDER_DETAIL, title="注文詳細", ssm=ssm),
     ]
     return pages
 
