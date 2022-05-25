@@ -7,10 +7,10 @@ from yaoya.services.base import NotFoundError
 
 class OrderListPage(MemberPage):
     def render(self) -> None:
-        if not self.validate_user():
+        session_id = self.ssm.get_session_id()
+        if not self.validate_user() or session_id is None:
             return
 
-        session_id = self.ssm.get_session_id()
         order_api_client = self.ssm.get_order_api_client()
 
         # タイトル表示

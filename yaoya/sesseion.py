@@ -1,3 +1,5 @@
+from typing import Optional
+
 import streamlit as st
 
 from yaoya.const import PageId, SessionKey
@@ -33,16 +35,16 @@ class StreamlitSessionManager:
         self._session_state[SessionKey.SESSION_ID.name] = None
         self._session_state[SessionKey.USERBOX.name] = None
 
-    def get_user(self) -> User:
+    def get_user(self) -> Optional[User]:
         return self._session_state[SessionKey.USER.name]
 
-    def get_item(self) -> Item:
+    def get_item(self) -> Optional[Item]:
         return self._session_state[SessionKey.ITEM.name]
 
-    def get_order(self) -> Order:
+    def get_order(self) -> Optional[Order]:
         return self._session_state[SessionKey.ORDER.name]
 
-    def get_session_id(self) -> str:
+    def get_session_id(self) -> Optional[str]:
         return self._session_state[SessionKey.SESSION_ID.name]
 
     def get_auth_api_client(self) -> IAuthAPIClientService:
@@ -80,9 +82,6 @@ class StreamlitSessionManager:
         self._session_state[SessionKey.SESSION_ID.name] = session_id
 
     def show_userbox(self) -> None:
-        # コンストラクタで初期化するとStreamlitの初期化処理中にStreamlitの更新処理が入り、以下のエラーが発生する
-        # StreamlitAPIException: set_page_config() can only be called once per app,
-        # and must be called as the first Streamlit command in your script.
         userbox = self._session_state[SessionKey.USERBOX.name]
         user = self.get_user()
         if userbox is None or user is None:
