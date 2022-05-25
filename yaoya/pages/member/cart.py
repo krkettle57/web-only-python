@@ -4,10 +4,10 @@ from yaoya.pages.member.base import MemberPage
 
 class CartPage(MemberPage):
     def render(self) -> None:
-        if not self.validate_user():
+        session_id = self.ssm.get_session_id()
+        if not self.validate_user() or session_id is None:
             return
 
-        session_id = self.ssm.get_session_id()
         cart_api_client = self.ssm.get_cart_api_client()
         cart = cart_api_client.get_cart(session_id)
 
